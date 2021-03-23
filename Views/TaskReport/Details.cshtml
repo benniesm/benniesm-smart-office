@@ -1,0 +1,88 @@
+@model SmartOffice.Models.TaskReport
+
+@{
+    ViewData["Title"] = "Reports";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<h2>@ViewData["Title"]</h2>
+<div>
+    @if ((string) ViewData["editable"] == "true")
+    {
+        <a class="clink clink-details" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
+    <!--
+    <button>@Html.ActionLink( linkText: "Add a review", actionName: "Create", controllerName: "TaskReview",  routeValues: new { taskId = @Model.Id }, htmlAttributes: null) |</button>
+    -->
+    <a class="clink clink-edit" asp-action="Index">Back to List</a>
+</div>
+<hr />
+<div class="details-container">
+    <dl class="row" style="padding:  0 1% 0 1%;">
+        <dt class = "col-sm-3 viewTh backBlue">
+            Agent
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.OwnerInfo)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Activity)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Activity)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Achievement)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Achievement)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.TimeIn)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.TimeIn)
+        </dd>
+    </dl>
+</div>
+<div id="reviewSpace" style="width: 100%;">
+    <div id="reviewLoading">
+        
+    </div>
+    <div id="reviewTable" class="cflex">
+        <div id="reviewTitle" class="col-sm-3">
+            Review
+        </div>
+        <div id="reviewDetails" class="col-sm-9">
+
+        </div>
+    </div>
+    <div id="reviewForm" style="width: 100%;">
+        <form action="#" onsubmit="requestPostReview();return false">
+            @{//Html.AntiForgeryToken()
+            }
+            <input type="hidden" id="__RequestVerificationToken" value="@GetAntiXsrfRequestToken()" />
+            <input type="hidden" id="TaskReportId" value="@Model.Id" />
+            <textarea style="width: 97%;" id="TaskReviewDetails" placeholder="Add review..."></textarea><br/>
+            <input class="cbtn cbtn-lemon" type="submit" value="Submit review" />
+        </form>
+    </div>
+</div>
+<div style="">
+    <input type="hidden" id="idOfCurrentUser" value="@ViewData["currentUserId"]" />
+    <input type="hidden" id="roleOfCurrentUser" value="@ViewData["currentUserRole"]" />
+</div>
+<script src="~/js/reportReview.js" asp-append-version="true"></script>

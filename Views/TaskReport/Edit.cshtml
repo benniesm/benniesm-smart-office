@@ -1,0 +1,45 @@
+@model SmartOffice.Models.TaskReport
+
+@{
+    ViewData["Title"] = "Edit Report";
+}
+
+<h4>@ViewData["Title"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="hidden" asp-for="OwnerId" class="form-control" />
+                <span asp-validation-for="OwnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input style="width: 85%;" asp-for="Activity" class="form-control" placeholder="Activity" />
+                <span asp-validation-for="Activity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <textarea style="width: 85%;" asp-for="Achievement" class="form-control" placeholder="Achievements...">
+                </textarea>
+                <span asp-validation-for="Achievement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input style="width: 85%;" asp-for="Comments" class="form-control" placeholder="Comments" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="TimeIn" class="form-control" />
+                <span asp-validation-for="TimeIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input class="cbtn cbtn-lemon" type="submit" value="Save" />
+                <input type="button" class="cbtn cbtn-plain" value="Back to List" onclick="location.href='@Url.Action("Index", "TaskReport")'" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

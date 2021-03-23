@@ -1,0 +1,57 @@
+@model SmartOffice.Models.TaskReview
+
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div>
+    <a class="clink clink-edit" asp-action="Index">Back to List</a>
+</div>
+<hr />
+<div class="details-container">
+    <dl class="row" style="padding:  0 1% 0 1%;">
+        <dt class = "col-sm-3 viewTh backBlue">
+            Agent
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            Activity
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Activity)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            Achievement
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Achievement)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Details)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.OwnerId)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.OwnerInfo)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.TimeIn)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.TimeIn)
+        </dd>
+    </dl>
+</div>

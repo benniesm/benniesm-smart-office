@@ -1,0 +1,48 @@
+@model SmartOffice.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <a class="clink clink-details" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a class="clink clink-edit" asp-action="Index">Back to List</a>
+</div>
+
+<hr />
+<div class="details-container">
+    <dl class="row" style="padding:  0 1% 0 1%;">
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+    </dl>
+</div>

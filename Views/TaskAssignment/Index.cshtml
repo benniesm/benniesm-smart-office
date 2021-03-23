@@ -1,0 +1,97 @@
+@model X.PagedList.IPagedList<SmartOffice.Models.TaskAssignment>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Fluent;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "Assignments";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="cflex cflex-ends">
+    <div>
+        <input type="button" class="cbtn cbtn-lemon" value="Assign a Task" onclick="location.href='@Url.Action("Create", "TaskAssignment")'" />
+    </div>
+    <div>
+        <form asp-controller="TaskAssignment" asp-action="Index" method="get">
+            <input type="text" style="width: 400px; border: 1px solid lightgray" class="npt-text" name="SearchString" placeholder="Firstname Lastname (Case Sensitive)">
+            <input type="submit" class="cbtn cbtn-plain" id="taskFilter" value="Filter assignments" />
+        </form>
+    </div>
+</div>
+
+<table class="ctable">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Assignee", "Index", new { sortOrder = ViewBag.RunnerSortParm, currentFilter=ViewBag.CurrentFilter }, new { @class = "cbtn-sort"})
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                @Html.ActionLink("Submitted", "Index", new { sortOrder = ViewBag.TimeSortParm, currentFilter=ViewBag.CurrentFilter }, new { @class = "cbtn-sort"})
+            </th>
+            <th>
+                @Html.ActionLink("Deadline", "Index", new { sortOrder = ViewBag.DeadlineSortParm, currentFilter=ViewBag.CurrentFilter }, new { @class = "cbtn-sort"})
+            </th>
+            <th>
+                Status
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Runner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td style="white-space: nowrap">
+                @if ((string) ViewData["idOfCurrentUser"] == item.OwnerId
+                    && (item.status == "assigned"
+                    || item.status == "pending"
+                    || item.status == "overdue"))
+                {
+                    <a class="clink clink-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                }
+
+                <a class="clink clink-details" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                
+                @if ((string) ViewData["idOfCurrentUser"] == item.OwnerId
+                    && (item.status == "assigned"
+                    || item.status == "pending"
+                    || item.status == "overdue"))
+                {
+                    <a class="clink clink-delete" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br/>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions()
+    {
+        ContainerDivClasses = new [] { "cbtn-pager" },
+        LiElementClasses = new List<string> {"cbtn-pager-list", "another-class"},
+        PageClasses = new string[] { "cbtn-pager-pages" }
+    })

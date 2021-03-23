@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    string roleOfCurrentUser = "";
+    string idOfCurrentUser = "";
+    string namesOfCurrentUser = "";
+    if (SignInManager.IsSignedIn(User))
+    {
+        ClaimsPrincipal currentUser = this.User;
+        roleOfCurrentUser = currentUser.FindFirst(ClaimTypes.Role).Value;
+        idOfCurrentUser = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var userInfo = await UserManager.GetUserAsync(User);
+        namesOfCurrentUser = userInfo.FirstName + " " + userInfo.LastName;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        SmartOffice
+        @{
+            //ViewData["Title"];
+        }
+    </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/customStyles.css" />
+</head>
+<body style="background-color: #FFF;">
+    <header id="header">
+        <nav id="cnav-bar" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/media/sm-logo.jpg" height="25" />
+                    <span id="capp-title">SmartOffice</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (roleOfCurrentUser != "")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TaskAssignment" asp-action="Index">Assignments</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TaskReport" asp-action="Index">Reports</a>
+                            </li>
+                            @if (roleOfCurrentUser == "manager"
+                                || roleOfCurrentUser == "admin"
+                                || roleOfCurrentUser =="superuser")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="TaskReview" asp-action="Index">Reviews</a>
+                                </li>
+                            }
+                            @if (roleOfCurrentUser == "admin"
+                                || roleOfCurrentUser =="superuser")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="ApplicationUser" asp-action="Index">User Manager</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="cflex cmainbar">
+        <main role="main" class="pb-3" style="padding: 0 30px 0 50px; width: 100%;">
+            @RenderBody()
+        </main>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="cflex csidebar">
+                <div id="notifications">
+                    notifications
+                </div>
+                <div id="messaging" class="cflex">
+                    <span id="messages-header">Instant Messages</span>
+                    <div id="messages-content"></div>
+                    <div id="messages-input">
+                        <input type="hidden" id="userInput" placeholder="User" value="@namesOfCurrentUser" />
+                        <textarea type="text" id="messageInput"></textarea><r/>
+                        <input type="button" id="sendButton" class="cbtn cbtn-blue" value="Send Message" />
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div
+                class="cflex csidebar"
+                style="background-color:#222;padding:30px;align-items:center;justify-content:center;">
+                 <img src="~/media/logo.png" />
+            </div>
+        }
+    </div>
+    <div class="footer">
+        &copy; 2021 - SmartOffice by &nbsp;<a href="http://benadegbaju.com.ng" target="_blank">BenniesM</a>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/chat.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

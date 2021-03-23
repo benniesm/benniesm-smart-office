@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="text-center" style="width:95%;">
+    <div
+        style="text-align:justify;
+        box-shadow: 0 4px 8px 0 #00000033, 0 3px 10px 0 #00000030;
+        padding:30px;
+        background-color:#fff;
+        font-size:0.9em;
+        margin-bottom:60px;"
+    >
+        
+        <p><h4 style="text-align:center;">Welcome to SmartOffice</h4></p>
+        <p>
+            <h6><b>Summary</b></h6>
+            This is Task Management Solution for workplace use. 
+            It is suitable for both on-site and remote work settings.
+            This web application is particularly useful for tracking employees' activities and productivity.
+            It enables good organization for assigning and executing tasks, and also one-stop solution for ensuring effective communication between teams and the organization as a whole.
+        </p>
+        <h6><b>Features include</b></h6>
+        <ul>
+            <li>Task assignment and monitoring</li>
+            <li>Reports creation and manager's reviews</li>
+            <li>Instant Messaging system</li>
+        </ul>
+        <p>
+            <h6><b>Access Levels</b></h6>
+            Agent, Manager, Administrator, Super user (In ascending order of Authorizations).
+        </p>
+        <p>
+        <h6><b>Details</b></h6>
+            Every user on this platform can assign a task to any user for execution.
+            The task creator can edit the details of the task until it has been marked as executed.
+            The task creator can also change the status of the task progressively.
+            Only the task creator and the assignee have view and edit rights to the task, 
+            although the assignee is only permitted to change the status of the task. 
+            Furthermore, only the task creator can mark the task as completed, upon satisfaction that the assignee executed according to requirements.
+            Every user can create a report, which can be reviewed by a user higher up in the hierarchy
+            <br/>
+            The Instant Messaging application can be used to exchange messages between individual users and groups (currently disabled),
+            with a message board for every member of the organization for transmitting general notices.            
+            <br/>
+            The dashboard displays a user's current status for all assigned tasks.
+            A manager is able to scroll on a list of users and determine which users to view their stats.
+            Statuses show the total number of tasks assigned to a user, total number of pending tasks (those that the user are working on),
+            tasks executed and those marked completed (current displays on the app are static data).
+            These stats can be filtered based on daily, weekly, monthly, yearly or total activities;
+            they can be further customized to accommodate custom date and time ranges. 
+        </p>
+        <p>
+            <h6><b>Potential Features and Customizations</b></h6>
+            <ul>
+                <li>Be able to select single contacts and create groups on the Instant Messaging app</li>
+                <li>A task calendar available based on user roles and other access policies</li>
+                <li>Be able to view trends and graphs of user task completion rates, meeting up with deadlines, etc. on the Dashboard.</li>
+                <li>A manager will be able to see the next available date or time for a user, on completion of all currently assigned tasks on the dashboard.</li>
+                <li>There is a lot of flexibility! This application can be customized to meet individual and organizational requirements.</li>
+            </ul>
+        </p>
+        <h6 style="text-align: center;"><b><a asp-area="Identity" asp-page="/Account/Login">Login</a> to explore this application!</b></h6>
+    </div>
+</div>

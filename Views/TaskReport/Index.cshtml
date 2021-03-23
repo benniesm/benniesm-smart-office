@@ -1,0 +1,89 @@
+@model X.PagedList.IPagedList<SmartOffice.Models.TaskReport>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Fluent;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "Reports";
+
+    /* Note that this method is not suitable for large Dictionary and over 1000 users
+    *   Use a ViewModel class to transfer data in such cases
+    */
+    Dictionary<int, string> reviewInfo = ViewData["reviewInfo"] as Dictionary<int, string>;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="cflex cflex-ends">
+    <div>
+        <input type="button" class="cbtn cbtn-lemon" value="Write a Report" onclick="location.href='@Url.Action("Create", "TaskReport")'" />
+    </div>
+    <div>
+        <form asp-controller="TaskReport" asp-action="Index" method="get">
+            <input type="text" style="width: 400px; border: 1px solid lightgray" class="npt-text" name="SearchString" placeholder="Firstname Lastname (Case Sensitive)">
+            <input type="submit" class="cbtn cbtn-plain" id="taskFilter" value="Filter reports" />
+        </form>
+    </div>
+</div>
+<table class="ctable">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Agent", "Index", new { sortOrder = ViewBag.OwnerSortParm, currentFilter=ViewBag.CurrentFilter }, new { @class = "cbtn-sort"})
+            </th>
+            <th>
+                Activity
+            </th>
+            <th>
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.TimeSortParm, currentFilter=ViewBag.CurrentFilter}, new { @class = "cbtn-sort"})
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeIn)
+            </td>
+            <td style="white-space: nowrap">
+                @if ((string) ViewData["idOfCurrentUser"] == item.OwnerId
+                        && reviewInfo[item.Id] == "false")
+                {
+                    <a class="clink clink-edit" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                }
+                
+                <a class="clink clink-details" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                
+                @if ((string) ViewData["idOfCurrentUser"] == item.OwnerId
+                        && reviewInfo[item.Id] == "false")
+                {
+                    <a class="clink clink-delete"  asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+
+                @if (reviewInfo[item.Id] == "true") {
+                    <span class="reviewed">Reviewed</span>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+    new PagedListRenderOptions()
+    {
+        ContainerDivClasses = new [] { "cbtn-pager" },
+        LiElementClasses = new List<string> {"cbtn-pager-list", "another-class"},
+        PageClasses = new string[] { "cbtn-pager-pages" }
+    })

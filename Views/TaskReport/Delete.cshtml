@@ -1,0 +1,49 @@
+@model SmartOffice.Models.TaskReport
+
+@{
+    ViewData["Title"] = "Are you sure you want to delete this?";
+}
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="row" style="padding: 1%;">
+        <dt class = "col-sm-3 viewTh backBlue">
+            Agent
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.OwnerInfo)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Activity)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Activity)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Achievement)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Achievement)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Comments)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.TimeIn)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.TimeIn)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" class="cbtn cbtn-red" value="Delete" class="cbtn cbtn-red" />
+        <input type="button" class="cbtn cbtn-plain" value="Back to List" onclick="location.href='@Url.Action("Index", "TaskReport")'" />
+            
+    </form>
+</div>

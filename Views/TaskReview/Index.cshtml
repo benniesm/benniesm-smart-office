@@ -1,0 +1,42 @@
+@model IEnumerable<SmartOffice.Models.TaskReview>
+
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="ctable">
+    <thead>
+        <tr>
+            <th>
+                Activity
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeIn)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeIn)
+            </td>
+            <td>
+                <a class="clink clink-details" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

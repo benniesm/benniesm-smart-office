@@ -1,0 +1,42 @@
+@model SmartOffice.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Create a new user";
+}
+
+<h4>@ViewData["Title"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input style="width: 75%;" asp-for="FirstName" class="form-control" placeholder="First Name" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input style="width: 75%;" asp-for="LastName" class="form-control" placeholder="Last Name" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input style="width: 75%;" asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input style="width: 75%;" asp-for="PasswordHash" type="password" class="form-control" placeholder="Password" />
+            </div>
+            <div class="form-group">
+                <input style="width: 75%;" asp-for="PhoneNumber" class="form-control" placeholder="Telephone" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input class="cbtn cbtn-lemon" type="submit" value="Create User" />
+                <input type="button" class="cbtn cbtn-plain" value="Back to List" onclick="location.href='@Url.Action("Index", "ApplicationUser")'" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

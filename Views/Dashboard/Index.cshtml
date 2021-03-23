@@ -1,0 +1,45 @@
+@using System.Security.Claims
+@{
+    ClaimsPrincipal currentUser = this.User;
+    string roleOfCurrentUser = currentUser.FindFirst(ClaimTypes.Role).Value;
+    string idOfCurrentUser = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+    ViewData["Title"] = "Dashboard";
+}
+<h4>@ViewData["Title"]</h4>
+<div id=dashboard-container class="cflex">
+    <div id="guages" class="cflex">
+        <div class="guage-meter" class="cflex">
+            <div class="guage-value">04</div>
+            <div class="guage-name">Assigned</div>
+        </div>
+        <div class="guage-meter" class="cflex">
+            <div class="guage-value">01</div>
+            <div class="guage-name">Pending</div>
+        </div>
+        <div class="guage-meter" class="cflex">
+            <div class="guage-value">17</div>
+            <div class="guage-name">Executed</div>
+        </div>
+        <div class="guage-meter" class="cflex">
+            <div class="guage-value">16</div>
+            <div class="guage-name">Completed</div>
+        </div>
+        <div class="guage-meter" class="cflex">
+            <div class="guage-value">38</div>
+            <div class="guage-name">Total</div>
+        </div>
+    </div>
+    @if (roleOfCurrentUser == "manager"
+        || roleOfCurrentUser == "admin"
+        || roleOfCurrentUser == "superuser")
+    {
+        <div id="listOfUsers">
+            @foreach (var user in ViewBag.AllUsers)
+            {
+                <div id="@user.GetType().GetProperty("Id").GetValue(user, null)" class="dash-user">
+                    @user.GetType().GetProperty("Names").GetValue(user, null)
+                </div>
+            }
+        </div>
+    }
+</div>

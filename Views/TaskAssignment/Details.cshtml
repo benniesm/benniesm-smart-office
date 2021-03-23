@@ -1,0 +1,158 @@
+@model SmartOffice.Models.TaskAssignment
+
+@{
+    ViewData["Title"] = "Assignments";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    @if (ViewBag.Editable == true)
+    {
+        <a class="clink clink-details" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
+    
+    <a class="clink clink-edit" asp-action="Index">Back to List</a>
+</div>
+
+<hr />
+<div class="details-container">
+    <dl class="row" style="padding:  0 1% 0 1%;">
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.OwnerId)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Owner)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.RunnerId)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Runner)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Instructions)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Instructions)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.TimeIn)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.TimeIn)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Deadline)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Deadline)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Started)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Started)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Executed)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Executed)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.ExecutedNotes)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.ExecutedNotes)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.Completed)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.Completed)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.CompletionNotes)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.CompletionNotes)
+        </dd>
+        <dt class = "col-sm-3 viewTh backBlue">
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+        <dd class = "col-sm-9 viewTd backWhite">
+            @Html.DisplayFor(model => model.status)
+        </dd>
+    </dl>
+</div>
+
+<div id="status-change-area" class="cflex">
+    <div id="status-change-fields" style="display: none;">
+        <form id="status-change-form">
+            @if (Model.status == "completed")
+            {
+            }
+            else
+            {
+                <input type="hidden" readonly id="Id" value="@Model.Id" />
+                <input type="hidden" readonly id="OwnerId" value="@Model.OwnerId" />
+                <input type="hidden" readonly id="RunnerId" value="@Model.RunnerId" />
+                <input type="hidden" readonly id="Title" value="@Model.Title" />
+                <input type="hidden" readonly id="Instructions" value="@Model.Instructions" />
+                <input type="hidden" readonly id="TimeIn" value="@Model.TimeIn" />
+                <input type="hidden" readonly id="Deadline" value="@Model.Deadline" />
+                <input type="hidden" id="Started" value="@Model.Started" />
+                <input type="hidden" id="Executed" value="@Model.Executed" />
+                <div id="execute" style="display: none;">
+                    <span class="cform-label">Notes</span><br/>
+                    <textarea id="ExecutedNotes">@Model.ExecutedNotes</textarea><br/>
+                </div>
+                <input type="hidden" id="Completed" value="@Model.Completed" />
+                <div id="complete" style="display: none;">
+                    <span class="cform-label">Completion Notes</span><br/>
+                    <textarea id="CompletionNotes">@Model.CompletionNotes</textarea><br/>
+                </div>
+                <input type="hidden" id="status" value="@Model.status" />
+                <input type="hidden" id="__RequestVerificationToken" value="@GetAntiXsrfRequestToken()" />
+                <div>
+                    <input id="submit-btn" class="cbtn cbtn-blue" type="submit" value="Click to update status" />
+                    <button class="cbtn cbtn-plain" onclick="endStatusUpdate();return false">Cancel</button>
+                </div>
+            }
+        </form>
+    </div>
+    <input id="task-id" type="hidden" value="@Model.Id" />
+    <input id="task-status" type="hidden" value="@Model.status" />
+    <select id="status-changer">
+        <option class="status-sel" value="default">Change the status of this task</option>
+        @if (Model.status == "assigned")
+        {
+            <option class="status-sel" value="pending">Mark as Started</option>
+        }
+        @if (Model.status != "executed" && Model.status != "completed")
+        {
+            <option class="status-sel" value="executed">Mark as Executed</option>
+        }
+        @if (Model.status != "completed"
+            && (ViewBag.Role == "special" || Model.OwnerId == ViewBag.CurrentUserId))
+        {
+            <option class="status-sel" value="completed">Mark as Completed</option>
+        }
+    </select>
+</div>
+<script src="~/js/assignmentStatusUpdate.js" asp-append-version="true"></script>
